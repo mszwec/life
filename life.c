@@ -6,6 +6,8 @@
 #include "engine.h"
 
 #define n 140      //liczba komorek n*n
+#define N 140      //liczba komorek n*n
+
 #define pause 75   //predkosc odswierzania (ms)
 #define cell 4	   //rozmiar rysowanej komorki (pixel)
 #define border 1  //rozmiar siatki (pixel)
@@ -42,15 +44,6 @@ static GdkGC *orange;
 static GdkGC *pink;
 static GdkGC *black;
 
-static void copyMatrix(int matrixA[][n], int matrixB[][n]){
-/*--------21.09.2008----------*/
-	for(row = 0; row<n; row++){
-		for(col = 0; col<n; col++){
-			matrixB[row][col] = matrixA[row][col];
-		}
-	} 
-/*--------21.09.2008----------*/
-}
 
 static void setColor(int i){
  /*----------19.10.2008------*/
@@ -190,8 +183,8 @@ static int draw( GtkWidget *widget ){
 		return 1;
 	}
 
-	copyMatrix(matrix, oldmatrix);
-	engine(n, matrix);
+	copyMatrix(N, matrix, oldmatrix);
+	engine(N, matrix);
 
 	for(row = 0; row<(n); row++){
 		for(col = 0; col<n; col++){
@@ -276,7 +269,7 @@ static void byebye() {
 }
 
 static void randomize(GtkWidget *widget, gpointer *data) {
-	copyMatrix(matrix, oldmatrix);/*--------21.09.2008----------*/
+	copyMatrix(N, matrix, oldmatrix);/*--------21.09.2008----------*/
 	random1(n, matrix);
 	if(_start == 0){
 		_start=1;
@@ -286,7 +279,7 @@ static void randomize(GtkWidget *widget, gpointer *data) {
 }
 
 static void clearIt(GtkWidget *widget, gpointer *data) {
-	copyMatrix(matrix, oldmatrix);/*--------21.09.2008----------*/
+	copyMatrix(N, matrix, oldmatrix);/*--------21.09.2008----------*/
 	clear(n, matrix); 
 	if(_start == 0){
 		_start=1;
@@ -296,7 +289,7 @@ static void clearIt(GtkWidget *widget, gpointer *data) {
 }
 
 void presetIt(GtkWidget *widget, gpointer *data) {
-	copyMatrix(matrix, oldmatrix);/*--------21.09.2008----------*/
+	copyMatrix(N, matrix, oldmatrix);/*--------21.09.2008----------*/
 	preset( n, matrix);
 	draw2(area);/*--------21.09.2008----------*/
 }
@@ -327,8 +320,8 @@ static gint button_press_event( GtkWidget *widget, GdkEventButton *event ){
 	if (event->button == 1 && pixmap != NULL){
 		x = ((x - x%(cell+border))/(cell+border));
 		y = ((y - y%(cell+border))/(cell+border));
-		copyMatrix(matrix, oldmatrix);/*--------21.09.2008----------*/ 
-		copyMatrix(gradient, oldgradient);
+		copyMatrix(N, matrix, oldmatrix);/*--------21.09.2008----------*/ 
+		copyMatrix(N, gradient, oldgradient);
 		matrix[x][y] = 1;
 		draw2(area);
 	}
@@ -364,8 +357,8 @@ g_print("(%d; %d)\n", x, y);
 	if (state & GDK_BUTTON1_MASK && pixmap != NULL ){ //x < n*cell+n*border && y < n*cell+n*border && x >= 0 && y >= 0
 		x = ((x - x%(cell+border))/(cell+border));
 		y = ((y - y%(cell+border))/(cell+border));
-		copyMatrix(matrix, oldmatrix);/*--------21.09.2008----------*/
-		copyMatrix(gradient, oldgradient);
+		copyMatrix(N, matrix, oldmatrix);/*--------21.09.2008----------*/
+		copyMatrix(N, gradient, oldgradient);
 		matrix[x][y] = 1;
 		draw2(area);
 	}
