@@ -1,7 +1,8 @@
 #include <stdlib.h> 
+#include <memory.h> 
 #include "engine.h"
 
-void engine(int n, int matrix[n][n])
+void engine(int n, msize matrix[n][n])
 {
 
     int row, col;
@@ -14,9 +15,9 @@ void engine(int n, int matrix[n][n])
         {
             neighbours = neigh(n, matrix, row, col);
 #ifndef REPLICATOR
-            copy[row][col] = life( neighbours, (int)matrix[row][col]);
+            copy[row][col] = life( neighbours, matrix[row][col]);
 #else
-            copy[row][col] = replicator( neighbours, (int)matrix[row][col]);
+            copy[row][col] = replicator( neighbours, matrix[row][col]);
 #endif
         }	
     }
@@ -60,7 +61,7 @@ int replicator(int neighbours, int state)
     return 0;
 }
 
-int neigh(int n, int matrix[n][n], int row, int col)
+int neigh(int n, msize matrix[n][n], int row, int col)
 {
     int neighbours=0;
 
@@ -83,31 +84,24 @@ int neigh(int n, int matrix[n][n], int row, int col)
 
 
 
-void random1(int n, int matrix[n][n])
+void random1(int n, msize matrix[n][n])
 {
-
     for(int row = 0; row<n; row++)
         for(int col = 0; col<n; col++)
-        {
             matrix[row][col] = rand()%2;
-        }	
 }
 
-void clear(int n, int matrix[n][n])
+void clear(int n, msize matrix[n][n])
 {
-    for(int row = 0; row<n; row++)
-        for(int col = 0; col<n; col++)
-        {
-            matrix[row][col] = 0;
-        }	
+    memset(matrix, (msize)0, sizeof(msize)*n*n);
 }
 
-void preset(int n, int matrix[n][n])
+void preset(int n, msize matrix[n][n])
 {
     static int presetno;
     int maxpresetno = 2;
     int row, col, myrow, mycol;
-    static int guns[9][36] = {
+    static msize guns[9][36] = {
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
@@ -153,12 +147,8 @@ void preset(int n, int matrix[n][n])
         presetno = 0;
 }
 
-void copyMatrix(int n, int matrixA[][n], int matrixB[][n])
+void copyMatrix(int n, msize matrixA[n][n], msize matrixB[n][n])
 {
-/*--------21.09.2008----------*/
-	for(int row = 0; row<n; row++)
-		for(int col = 0; col<n; col++)
-			matrixB[row][col] = matrixA[row][col];
-/*--------21.09.2008----------*/
+    memcpy(matrixB, matrixA, sizeof(msize)*n*n );
 }
 

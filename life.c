@@ -6,10 +6,11 @@
 #include "engine.h"
 
 #define N 140      //number of cells n*n
-
 #define PAUSE 60   //refresh rate (miliseconds)
 #define CELL 4	   //size of cell (pixel)
 #define BORDER 1  //size of cellborder (pixel)
+#define COLOR 0   //if 1 then cells are coloured
+
 #define WINDOW_SIZE (N*CELL+N*BORDER) //pixels needed by all cells with borders
 
 #define GTK_WIDGET_STATE(wid) (GTK_WIDGET (wid)->state)
@@ -21,9 +22,9 @@ void gdk_draw_rectangle(GdkDrawable *, GdkGC*, gboolean, gint, gint, gint, gint)
 guint gtk_timeout_add(guint32, void*, gpointer);
 
 static GdkPixmap *pixmap = NULL;
-static int matrix[N][N];
-static int oldmatrix[N][N];/*--------21.09.2008----------*/
-static int _start = 0;
+static msize matrix[N][N];
+static msize oldmatrix[N][N];/*--------21.09.2008----------*/
+static int _start;
 static GtkWidget *area;
 static GdkRectangle update_rect;
 
@@ -133,6 +134,7 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 
     if (pixmap)
         g_object_unref(pixmap);
+
     pixmap = gdk_pixmap_new(widget->window, WINDOW_SIZE, WINDOW_SIZE, -1);
     gdk_draw_rectangle (pixmap,
                         //widget->style->black_gc, 
@@ -192,7 +194,7 @@ static int draw( GtkWidget *widget )
 
             if(matrix[row][col]==1)
             {
-                //setColor(neigh(N, matrix, row, col));
+                if(COLOR) setColor(neigh(N, matrix, row, col));
                 gdk_draw_rectangle (pixmap,
                                     //widget->style->black_gc,
                                     mystyle,
