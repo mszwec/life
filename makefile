@@ -12,25 +12,31 @@ LGTK = `pkg-config gtk+-2.0 --libs`
 
 LFLAGS = -o
 
-OBJECTS_LIFE = life.o engine.o
-OBJECTS_REPLICATOR = life.o replicator.o
+OBJECTS_LIFE = life.o gui.o engine.o
+OBJECTS_REPLICATOR = life.o gui.o replicator.o
 
 all: replicator life
 
 replicator.o: engine.c
 	@echo "**** replicator.o ... ****"
-	$(CC) $(CFLAGS) -DREPLICATOR engine.c -o replicator.o
+	$(CC) $(CFLAGS) $(CGTK) -DREPLICATOR engine.c -o replicator.o
 	@echo "**** replicator.o ended ****"
+
+
+gui.o: gui.c
+	@echo "**** engine.o ... ****"
+	$(CC) $(CFLAGS) $(CGTK) gui.c -o gui.o
+	@echo "**** engine.o ended ****"
 
 
 engine.o: engine.c
 	@echo "**** engine.o ... ****"
-	$(CC) $(CFLAGS) engine.c -o engine.o
+	$(CC) $(CFLAGS) $(CGTK) engine.c -o engine.o
 	@echo "**** engine.o ended ****"
 
 life.o: life.c
 	@echo "**** life.o ... ****"
-	$(CC) $(CFLAGS) life.c $(CGTK)
+	$(CC) $(CFLAGS) $(CGTK) life.c 
 	@echo "**** life.o ended ****"
 
 life: $(OBJECTS_LIFE)

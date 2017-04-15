@@ -1,7 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-typedef unsigned char msize;
+#include "life.h"
 
 void random1(int n, msize matrix[n][n]);
 void clear(int n, msize matrix[n][n]);

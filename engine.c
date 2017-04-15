@@ -1,5 +1,10 @@
 #include <stdlib.h> 
+
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+
 #include <memory.h> 
+#include "life.h"
 #include "engine.h"
 
 void engine(int n, msize matrix[n][n])
